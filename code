@@ -1,0 +1,73 @@
+using System;
+using System.Text;
+
+namespace vigenerecipher
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Input text:");
+            String text = Console.ReadLine();
+
+            Console.WriteLine("Input key:");
+            String key = Console.ReadLine();
+
+            String alphabet = "abcdefghijklmnopqrstuvwxyz";
+            var table = new char[alphabet.Length, alphabet.Length];
+
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                for (int j = 0; j < alphabet.Length; j++)
+                {
+                    int shift = (i + j) % alphabet.Length;
+                    table[i, j] = alphabet[shift];
+                }
+            }
+
+            int param1 = 1, param2 = 0, variab =1;
+            String result = "";
+
+            text = text.ToLower();
+            key = key.ToLower();
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (Char.IsLetter(text[i]))
+                {
+                    for (int row = 0; row < alphabet.Length; row++)
+                    {
+                        if (table[row, 0] == text[i])
+                        {
+                            param1 = row;
+                            break;
+                        }
+                    }
+                    for (int column = 0; column < alphabet.Length; column++)
+                    {
+                        if (table[0, column] == key[variab - 1])
+                        {
+                            param2 = column;
+                            break;
+                        }
+                    }
+                    result += table[param1, param2];
+                }
+                else
+                {
+                    result += text[i];
+                    variab--;
+                }
+
+                if (variab % key.Length == 0)
+                {
+                    variab = 0;
+                }
+                variab++;
+            }
+            Console.WriteLine("Result:");
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+    }
+}
